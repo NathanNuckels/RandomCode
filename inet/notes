@@ -1,0 +1,67 @@
+       #include <sys/types.h>
+       #include <sys/socket.h>
+       #include <netdb.h>
+
+       int getaddrinfo(const char *restrict node,
+                       const char *restrict service,
+                       const struct addrinfo *restrict hints,
+                       struct addrinfo **restrict res);
+
+       void freeaddrinfo(struct addrinfo *res);
+
+       const char *gai_strerror(int errcode);
+       
+       
+#include <netdb.h>
+
+struct addrinfo {
+    int ai_flags;
+    int ai_family;
+    int ai_socktype;
+    int ai_protocol;
+    size_t ai_addrlen;
+    char * ai_canonname;
+    struct sockaddr * ai_addr;
+    struct addrinfo * ai_next
+};
+
+struct addrinfo hints;
+struct addrinfo* result;
+memset ( &hints , 0 , sizeof(hints) ) 
+hints.ai_family=AF_UNSPEC
+hints.ai_socktype=SOCK_STREAM
+
+getaddrinfo( domain , protocol, &hints, &result);
+
+       #include <sys/socket.h>
+
+       int socket(int domain, int type, int protocol);
+       
+int sock = socket( res->ai_family , res->ai_socktype , res->ai_protocol );
+
+
+if the addrinfo is of you, (Use the flag AI_PASSIVE and domain NULL. Do not use domain "localhost")
+you can run bind() and be a server.
+if the addrinfo is someone else, connct() to them.
+
+    int bind(int sockfd, const struct sockaddr *addr,
+                socklen_t addrlen);
+                
+           #include <sys/socket.h>
+
+       int connect(int sockfd, const struct sockaddr *addr,
+                   socklen_t addrlen);
+      .
+  .
+.
+bind ( sock , res->ai_addr , res->ai_addrlen );
+connect( sock , res->ai_addr , res->ai_addrlen );
+
+
+ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+Tries to write "len" bytes into "buf". returns the actuall number of bytes receved.
+
+ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+Tries to write "len" bytes from "buf" to "sockfd". Returns the actuall number of bytes sent.
+
+use close(socket)
