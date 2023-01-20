@@ -1,6 +1,6 @@
 %.o: %.cpp
   g++ -c -o -O2 $@ $<
-%.o %.cc
+%.o: %.cc
   g++ -c -o -O2 $@ $<
 
 stdinServer: stdinServer.o connect.o
