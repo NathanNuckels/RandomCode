@@ -26,7 +26,8 @@ namespace inet{
         status=connect(sock,res->ai_addr,res->ai_addrlen);
         if(status==-1){
             std::cerr<<strerror(errno)<<std::endl;
-            freeaddrinfo(res);
+            freeaddrinfo(res); //Clean up loose ends.
+            close(sock);
             return -1;
         }
         freeaddrinfo(res);
@@ -54,6 +55,7 @@ namespace inet{
         status = bind(sock,res->ai_addr,res->ai_addrlen);
         if(status==-1){
             freeaddrinfo(res);
+            close(sock);
             std::cerr<<strerror(errno)<<std::endl;
             return -1;
         }
